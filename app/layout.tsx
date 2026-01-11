@@ -42,7 +42,7 @@ export default function RootLayout({
         <main>{children}</main>
 
         <footer className="py-12 text-center border-t border-white/5 text-gray-600 text-sm">
-          © 2026 IMPACT MEDIA. ALL RIGHTS RESERVED.
+          © 2026 NEVERSLEEP. ALL RIGHTS RESERVED.
         </footer>
       </body>
     </html>
