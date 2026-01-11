@@ -20,18 +20,20 @@ export default function RootLayout({
       <body className={`${inter.className} bg-black text-white`}>
         {/* NAVBAR */}
         <nav className="fixed w-full z-100 flex justify-between items-center px-8 md:px-20 py-6 bg-[#111] backdrop-blur-md border-b border-white/5">
-          {/* LOGO JAKO OBRAZ */}
-          <div className="relative w-40 h-20">
-            <Image
-              src={logo}
-              alt="Neversleep Logo"
-              fill
-              className="object-contain z-120"
-              priority
-            />
+          {/* LEWA STRONA: LOGO (Szerokość w-40) */}
+          <div className="flex justify-start w-40">
+            <a className="relative w-40 h-20" href="/">
+              <Image
+                src={logo}
+                alt="Neversleep Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </a>
           </div>
 
-          {/* Menu Desktopowe */}
+          {/* ŚRODEK: Menu Desktopowe (Zawsze wycentrowane) */}
           <div className="hidden md:flex gap-8 text-sm font-medium text-gray-200">
             <a href="#" className="hover:text-white transition">
               SERVICES
@@ -44,17 +46,21 @@ export default function RootLayout({
             </a>
           </div>
 
-          {/* Przycisk MENU/CLOSE - Zawsze na wierzchu dzięki z-[120] */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-sm text-gray-200 font-medium tracking-widest hover:text-purple-500 transition-colors z-120"
-          >
-            {isOpen ? "CLOSE" : "MENU"}
-          </button>
+          {/* PRAWA STRONA: Przyciski (Szerokość w-40 dla symetrii) */}
+          <div className="flex justify-end w-40">
+            {/* Przycisk Let's Talk - Widoczny TYLKO na desktopie (hidden md:block) */}
+            <button className="hidden md:block cursor-pointer w-full bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-purple-600 hover:text-white transition-all whitespace-nowrap">
+              LET'S TALK
+            </button>
 
-          <button className="hidden md:block bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-purple-600 hover:text-white transition-all">
-            LET'S TALK
-          </button>
+            {/* Przycisk MENU - Widoczny TYLKO na mobile (md:hidden) */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden text-sm text-gray-200 font-medium tracking-widest hover:text-purple-500 transition-colors z-[120]"
+            >
+              {isOpen ? "CLOSE" : "MENU"}
+            </button>
+          </div>
         </nav>
 
         {/* MOBILNY OVERLAY (WYSUWANY Z PRAWEJ) */}
