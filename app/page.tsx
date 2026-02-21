@@ -146,7 +146,7 @@ export default function Home() {
           <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter italic leading-none">
             VIDEO
           </h2>
-          <p className="text-[10px] md:text-sm font-light uppercase tracking-[0.3em] mt-2 text-zinc-400">
+          <p className="text-[10px] md:text-sm font-light uppercase tracking-[0.3em] mt-2 text-zinc-200 ml-3">
             Zobacz ruch
           </p>
         </div>
