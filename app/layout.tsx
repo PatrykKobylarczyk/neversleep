@@ -41,7 +41,7 @@ export default function RootLayout({
             <div className="flex gap-6 items-center">
               {/* INSTAGRAM */}
               <a
-                href="instagram://user?username=neversleep_production" // Próba otwarcia w aplikacji
+                href="https://www.instagram.com/neversleep_production/" // Próba otwarcia w aplikacji
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
@@ -66,7 +66,7 @@ export default function RootLayout({
 
               {/* FACEBOOK */}
               <a
-                href="fb://facewebmodal/f?href=https://www.facebook.com/neversleep.production/"
+                href="https://www.facebook.com/neversleep.production/"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
@@ -154,7 +154,7 @@ export default function RootLayout({
 
               {/* FACEBOOK */}
               <a
-                href="fb://facewebmodal/f?href=https://www.facebook.com/neversleep.production/"
+                href="https://www.facebook.com/neversleep.production/"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
