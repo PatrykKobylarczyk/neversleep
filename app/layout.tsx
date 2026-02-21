@@ -34,29 +34,68 @@ export default function RootLayout({
           </div>
 
           {/* ŚRODEK: Menu Desktopowe (Zawsze wycentrowane) */}
-          <div className="hidden md:flex gap-8 text-sm font-medium text-gray-200">
-            <a href="#" className="hover:text-white transition">
-              SERVICES
-            </a>
-            <a href="#" className="hover:text-white transition">
-              WORKS
-            </a>
-            <a href="#" className="hover:text-white transition">
+          <div className="hidden md:flex gap-18 text-sm font-medium text-gray-200">
+            <a href="#" className="hover:text-[#AC137E] transition">
               ABOUT
             </a>
+            <div className="flex gap-6 items-center">
+              {/* INSTAGRAM */}
+              <a
+                href="#"
+                onClick={() => setIsOpen(false)}
+                className="text-gray-200 hover:text-[#AC137E] transition-colors"
+                aria-label="Instagram"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+              </a>
+
+              {/* FACEBOOK */}
+              <a
+                href="#"
+                onClick={() => setIsOpen(false)}
+                className="text-gray-200 hover:text-[#AC137E] transition-colors"
+                aria-label="Facebook"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+              </a>
+            </div>
           </div>
 
           {/* PRAWA STRONA: Przyciski (Szerokość w-40 dla symetrii) */}
           <div className="flex justify-end w-40">
             {/* Przycisk Let's Talk - Widoczny TYLKO na desktopie (hidden md:block) */}
-            <button className="hidden md:block cursor-pointer w-full bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-purple-600 hover:text-white transition-all whitespace-nowrap">
+            <button className="hidden md:block cursor-pointer w-full bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-[#AC137E]  hover:text-white transition-all whitespace-nowrap">
               LET'S TALK
             </button>
 
             {/* Przycisk MENU - Widoczny TYLKO na mobile (md:hidden) */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-sm text-gray-200 font-medium tracking-widest hover:text-purple-500 transition-colors z-[120]"
+              className="md:hidden text-sm text-gray-200 font-medium tracking-widest hover:text-[#AC137E] transition-colors z-[120]"
             >
               {isOpen ? "CLOSE" : "MENU"}
             </button>
@@ -79,25 +118,56 @@ export default function RootLayout({
             <a
               href="#"
               onClick={() => setIsOpen(false)}
-              className="text-4xl font-black hover:text-purple-500 transition-colors"
-            >
-              SERVICES
-            </a>
-            <a
-              href="#"
-              onClick={() => setIsOpen(false)}
-              className="text-4xl font-black hover:text-purple-500 transition-colors"
-            >
-              WORKS
-            </a>
-            <a
-              href="#"
-              onClick={() => setIsOpen(false)}
-              className="text-4xl font-black hover:text-purple-500 transition-colors"
+              className="text-4xl font-black hover:text-[#AC137E] transition-colors"
             >
               ABOUT
             </a>
-            <button className="bg-gray-200 text-black px-8 py-4 rounded-full text-lg font-bold mt-10">
+            <div className="flex gap-6 items-center">
+              {/* INSTAGRAM */}
+              <a
+                href="#"
+                onClick={() => setIsOpen(false)}
+                className="text-zinc-400 hover:text-[#AC137E] transition-colors"
+                aria-label="Instagram"
+              >
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+              </a>
+
+              {/* FACEBOOK */}
+              <a
+                href="#"
+                onClick={() => setIsOpen(false)}
+                className="text-zinc-400 hover:text-[#AC137E] transition-colors"
+                aria-label="Facebook"
+              >
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+              </a>
+            </div>
+            <button className="bg-gray-200 text-black px-8 py-4 rounded-full text-lg font-bold ">
               LET'S TALK
             </button>
           </div>
