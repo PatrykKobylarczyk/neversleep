@@ -13,11 +13,10 @@ export default function Home() {
   const [selectedProject, setSelectedProject] = useState<PhotoProject | null>(
     null,
   );
-  const [selectedVideo, setSelectedVideo] = useState<VideoProject | null>(null); // Nowy stan dla video
+  const [selectedVideo, setSelectedVideo] = useState<VideoProject | null>(null);
   const [modalImageIndex, setModalImageIndex] = useState<number | null>(null);
   const [direction, setDirection] = useState(0);
 
-  // Obsługa klawisza ESC
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -63,7 +62,7 @@ export default function Home() {
 
   return (
     <main className="fixed top-[128px] left-0 w-full h-[calc(100dvh-128px)] flex flex-col md:flex-row overflow-hidden bg-black text-white">
-      {/* GŁÓWNY PRZYCISK ZAMKNIĘCIA (SEKCJE) */}
+      {/* PRZYCISK ZAMKNIĘCIA SEKCJI */}
       {activeTab && modalImageIndex === null && !selectedVideo && (
         <button
           onClick={(e) => {
@@ -90,13 +89,13 @@ export default function Home() {
         </button>
       )}
 
-      {/* SEKCJA FOTO - Bez zmian */}
+      {/* SEKCJA FOTO */}
       <section
         onClick={() => setActiveTab("foto")}
         className={`relative flex flex-col justify-end p-8 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer overflow-hidden group ${activeTab === "video" ? "flex-[0.08] md:flex-[0.03]" : "flex-1"}`}
       >
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"
           style={{
             backgroundImage: `url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070')`,
           }}
@@ -104,6 +103,8 @@ export default function Home() {
         <div
           className={`absolute inset-0 bg-black transition-opacity duration-700 ${activeTab === "video" ? "opacity-95" : activeTab === "foto" ? "opacity-0" : "opacity-40 group-hover:opacity-10"}`}
         />
+
+        {/* Pionowy napis przy zwiniętej sekcji */}
         <div
           className={`absolute inset-0 flex items-center justify-center transition-all duration-700 ${activeTab === "video" ? "opacity-100 delay-700" : "opacity-0"}`}
         >
@@ -111,13 +112,20 @@ export default function Home() {
             FOTO
           </span>
         </div>
+
+        {/* Tytuł i PODTYTUŁ sekcji głównej */}
         <div
           className={`relative z-10 transition-all duration-500 ${activeTab !== null ? "opacity-0 translate-y-10" : "opacity-100 translate-y-0"}`}
         >
-          <h2 className="text-4xl md:text-7xl font-black italic uppercase">
+          <h2 className="text-4xl md:text-7xl font-black italic uppercase leading-none text-white">
             FOTO
           </h2>
+          <p className="text-[10px] md:text-xs font-medium tracking-[0.4em] text-zinc-400 mt-4 uppercase">
+            Architecture / Interior / Product
+          </p>
         </div>
+
+        {/* Grid Foto */}
         <div
           className={`absolute inset-0 z-20 bg-white text-black transition-all duration-1000 scrollbar-hide overflow-y-auto px-6 md:px-32 pt-24 md:pt-40 pb-20 ${activeTab === "foto" ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}`}
         >
@@ -131,7 +139,7 @@ export default function Home() {
                       e.stopPropagation();
                       setSelectedProject(p);
                     }}
-                    className="group/item flex flex-col"
+                    className="group/item flex flex-col cursor-pointer"
                   >
                     <div className="aspect-square bg-zinc-100 relative overflow-hidden mb-4">
                       <img
@@ -140,9 +148,12 @@ export default function Home() {
                         alt=""
                       />
                     </div>
-                    <h3 className="text-[11px] font-bold uppercase tracking-[0.2em]">
+                    <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] leading-none">
                       {p.title}
                     </h3>
+                    <p className="text-[9px] text-zinc-400 uppercase tracking-widest mt-2">
+                      {p.subtitle}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -176,12 +187,14 @@ export default function Home() {
           muted
           loop
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
           src="/assets/video.mov"
         />
         <div
           className={`absolute inset-0 bg-black transition-opacity duration-700 ${activeTab === "foto" ? "opacity-95" : activeTab === "video" ? "opacity-0" : "opacity-40 group-hover:opacity-10"}`}
         />
+
+        {/* Pionowy napis przy zwiniętej sekcji */}
         <div
           className={`absolute inset-0 flex items-center justify-center transition-all duration-700 ${activeTab === "foto" ? "opacity-100 delay-700" : "opacity-0"}`}
         >
@@ -189,14 +202,20 @@ export default function Home() {
             VIDEO
           </span>
         </div>
+
+        {/* Tytuł i PODTYTUŁ sekcji głównej */}
         <div
           className={`relative z-10 transition-all duration-500 ${activeTab !== null ? "opacity-0 translate-y-10" : "opacity-100 translate-y-0"}`}
         >
-          <h2 className="text-4xl md:text-7xl font-black italic uppercase">
+          <h2 className="text-4xl md:text-7xl font-black italic uppercase leading-none text-white">
             VIDEO
           </h2>
+          <p className="text-[10px] md:text-xs font-medium tracking-[0.4em] text-zinc-400 mt-4 uppercase">
+            Commercial / Music Video / Drone
+          </p>
         </div>
 
+        {/* Grid Video */}
         <div
           className={`absolute inset-0 z-20 bg-white text-black transition-all duration-1000 scrollbar-hide overflow-y-auto px-10 md:px-32 pt-24 md:pt-40 pb-20 ${activeTab === "video" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"}`}
         >
@@ -208,11 +227,11 @@ export default function Home() {
                   e.stopPropagation();
                   setSelectedVideo(v);
                 }}
-                className="flex flex-col cursor-pointer"
+                className="group/item flex flex-col cursor-pointer"
               >
                 <div className="aspect-square bg-zinc-100 relative overflow-hidden mb-4">
                   <video
-                    src={`${v.videoSrc}#t=0.001`}
+                    src={`${v.videoSrc}#t=0.1`}
                     muted
                     loop
                     playsInline
@@ -221,19 +240,22 @@ export default function Home() {
                       e.currentTarget.pause();
                       e.currentTarget.currentTime = 0;
                     }}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-105"
                   />
                 </div>
-                <h3 className="text-[11px] font-bold uppercase tracking-widest">
+                <h3 className="text-[11px] font-bold uppercase tracking-widest leading-none">
                   {v.title}
                 </h3>
+                <p className="text-[9px] text-zinc-400 uppercase tracking-widest mt-2">
+                  {v.subtitle}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* MODAL LIGHTBOX (FOTO I VIDEO) */}
+      {/* MODAL LIGHTBOX */}
       <AnimatePresence initial={false}>
         {(modalImageIndex !== null || selectedVideo) && (
           <motion.div
@@ -242,13 +264,12 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[300] bg-black flex items-center justify-center touch-none overflow-hidden"
           >
-            {/* KRZYŻYK MODALA - IDENTYCZNA POZYCJA */}
             <button
               onClick={() => {
                 setModalImageIndex(null);
                 setSelectedVideo(null);
               }}
-              className="fixed top-[145px] md:top-[160px] right-5 md:right-[250px] z-[400] text-zinc-400 hover:text-white transition-colors p-2"
+              className="fixed top-[160px] right-[250px] z-[400] text-zinc-400 hover:text-white transition-colors p-2"
             >
               <svg
                 width="26"
@@ -263,7 +284,6 @@ export default function Home() {
               </svg>
             </button>
 
-            {/* STRZAŁKI - IDENTYCZNA POZYCJA */}
             <div className="hidden md:flex absolute inset-x-10 lg:inset-x-80 top-1/2 -translate-y-1/2 justify-between z-[350] pointer-events-none">
               <button
                 onClick={(e) => {
