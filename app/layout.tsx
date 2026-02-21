@@ -41,7 +41,9 @@ export default function RootLayout({
             <div className="flex gap-6 items-center">
               {/* INSTAGRAM */}
               <a
-                href="#"
+                href="instagram://user?username=neversleep_production" // Próba otwarcia w aplikacji
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
                 className="text-gray-200 hover:text-[#AC137E] transition-colors"
                 aria-label="Instagram"
@@ -64,7 +66,9 @@ export default function RootLayout({
 
               {/* FACEBOOK */}
               <a
-                href="#"
+                href="fb://facewebmodal/f?href=https://www.facebook.com/neversleep.production/"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
                 className="text-gray-200 hover:text-[#AC137E] transition-colors"
                 aria-label="Facebook"
@@ -116,7 +120,7 @@ export default function RootLayout({
           {/* Linki w menu mobilnym */}
           <div className="h-screen text-gray-200 flex flex-col items-center justify-center -translate-y-[5vh] gap-8 mt-20">
             <a
-              href="#"
+              href=""
               onClick={() => setIsOpen(false)}
               className="text-4xl font-black hover:text-[#AC137E] transition-colors"
             >
@@ -125,7 +129,9 @@ export default function RootLayout({
             <div className="flex gap-6 items-center">
               {/* INSTAGRAM */}
               <a
-                href="#"
+                href="instagram://user?username=neversleep_production" // Próba otwarcia w aplikacji
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
                 className="text-zinc-400 hover:text-[#AC137E] transition-colors"
                 aria-label="Instagram"
@@ -148,7 +154,9 @@ export default function RootLayout({
 
               {/* FACEBOOK */}
               <a
-                href="#"
+                href="fb://facewebmodal/f?href=https://www.facebook.com/neversleep.production/"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
                 className="text-zinc-400 hover:text-[#AC137E] transition-colors"
                 aria-label="Facebook"
