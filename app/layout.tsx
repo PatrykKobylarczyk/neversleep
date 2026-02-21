@@ -154,12 +154,32 @@ export default function RootLayout({
 
               {/* FACEBOOK */}
               <a
-                href="fb://page/100064559265502"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsOpen(false)}
-                className="text-zinc-400 hover:text-[#AC137E] transition-colors"
-                aria-label="Facebook"
+                href="https://www.facebook.com/neversleep.production" // To dla PC i Androida
+                onClick={(e) => {
+                  e.preventDefault();
+                  const fbAppUrl =
+                    "fb://facewebmodal/f?href=https://www.facebook.com/neversleep.production";
+                  const fbWebUrl =
+                    "https://www.facebook.com/neversleep.production";
+
+                  // Sprawdzamy czy to iOS
+                  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+
+                  if (isIOS) {
+                    // Próba otwarcia aplikacji
+                    window.location.href = fbAppUrl;
+
+                    // Fallback: Jeśli po 500ms nadal tu jesteśmy (brak apki), otwórz w nowej karcie
+                    setTimeout(() => {
+                      window.open(fbWebUrl, "_blank");
+                    }, 500);
+                  } else {
+                    // Dla reszty świata standardowe otwarcie
+                    window.open(fbWebUrl, "_blank");
+                  }
+                  setIsOpen(false); // Zamknij menu
+                }}
+                className="text-zinc-400 hover:text-purple-500 transition-colors"
               >
                 <svg
                   width="32"
