@@ -114,7 +114,7 @@ export default function RootLayout({
           </div>
 
           {/* Linki w menu mobilnym */}
-          <div className="h-screen text-gray-200 flex flex-col items-center justify-center -translate-y-[5vh] gap-8">
+          <div className="h-screen text-gray-200 flex flex-col items-center justify-center -translate-y-[5vh] gap-8 mt-20">
             <a
               href="#"
               onClick={() => setIsOpen(false)}
@@ -167,7 +167,7 @@ export default function RootLayout({
                 </svg>
               </a>
             </div>
-            <button className="bg-gray-200 text-black px-8 py-4 rounded-full text-lg font-bold ">
+            <button className="bg-gray-200 text-black px-8 py-4 rounded-full text-lg font-bold mt-20">
               LET'S TALK
             </button>
           </div>
