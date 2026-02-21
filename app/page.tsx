@@ -17,6 +17,7 @@ export default function Home() {
           }}
           className={`fixed z-[100] right-6 md:right-10 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)]
             ${activeTab === "video" ? "translate-y-[13dvh] md:translate-y-0" : "translate-y-0"}
+            ${activeTab === "foto" ? "translate-x-0 md:-translate-x-[6vw]" : "translate-x-0"}
           `}
           style={{ top: "calc(128px + 24px)" }}
         >
@@ -25,7 +26,7 @@ export default function Home() {
             height="20"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#d4d4d8"
+            stroke="#878787"
             strokeWidth="1.2"
             strokeLinecap="round"
             strokeLinejoin="round"
