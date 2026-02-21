@@ -269,7 +269,7 @@ export default function Home() {
                 setModalImageIndex(null);
                 setSelectedVideo(null);
               }}
-              className="fixed top-[160px] right-[250px] z-[400] text-zinc-400 hover:text-white transition-colors p-2"
+              className="fixed top-[145px] md:top-[160px] right-5 md:right-[250px] z-[400] text-zinc-400 hover:text-white transition-colors p-2"
             >
               <svg
                 width="26"
