@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Inter } from "next/font/google";
 import Image from "next/image"; // Import komponentu Image
 import "./globals.css";
-import logo from "../assets/logo.png";
+import logo from "../public/assets/logo.png";
 
 const inter = Inter({ subsets: ["latin"] });
 
