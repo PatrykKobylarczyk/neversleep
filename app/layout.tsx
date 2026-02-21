@@ -66,7 +66,7 @@ export default function RootLayout({
 
               {/* FACEBOOK */}
               <a
-                href="https://www.facebook.com/neversleep.production/"
+                href="https://www.facebook.com/neversleep.production"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
@@ -154,7 +154,7 @@ export default function RootLayout({
 
               {/* FACEBOOK */}
               <a
-                href="https://www.facebook.com/neversleep.production/"
+                href="fb://page/100064559265502"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setIsOpen(false)}
