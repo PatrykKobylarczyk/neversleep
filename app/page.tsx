@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { photoProjects, videoProjects } from "../data"; // Upewnij się, że ścieżka do pliku data.ts jest poprawna
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"foto" | "video" | null>(null);
@@ -15,7 +16,7 @@ export default function Home() {
             setActiveTab(null);
           }}
           className={`fixed z-[100] right-6 md:right-10 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)]
-            ${activeTab === "video" ? "translate-y-[12dvh] md:translate-y-0" : "translate-y-0"}
+            ${activeTab === "video" ? "translate-y-[13dvh] md:translate-y-0" : "translate-y-0"}
           `}
           style={{ top: "calc(128px + 24px)" }}
         >
@@ -24,7 +25,7 @@ export default function Home() {
             height="20"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="#878787"
+            stroke="#d4d4d8"
             strokeWidth="1.2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -77,18 +78,29 @@ export default function Home() {
 
         {/* WORKSPACE FOTO */}
         <div
-          className={`absolute inset-0 z-20 bg-white text-black transition-all duration-1000 scrollbar-hide overflow-y-auto px-14 md:px-32 pt-24 md:pt-40 pb-20
+          className={`absolute inset-0 z-20 bg-white text-black transition-all duration-1000 scrollbar-hide overflow-y-auto px-10 md:px-32 pt-24 md:pt-40 pb-20
           ${activeTab === "foto" ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"}`}
         >
-          {/* Zmiana max-w-6xl na max-w-4xl aby zwęzić kafelki */}
           <div className="max-w-4xl mx-auto flex flex-col min-h-full">
             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
-              {[1, 2, 3, 4].map((i) => (
+              {photoProjects.map((project) => (
                 <div
-                  key={i}
-                  className="aspect-[3/4] md:aspect-square bg-zinc-100 animate-fadeIn relative overflow-hidden"
+                  key={project.id}
+                  className="group/item cursor-pointer flex flex-col"
                 >
-                  <div className="absolute inset-0 bg-zinc-200 transition-transform duration-700 hover:scale-105" />
+                  <div className="aspect-[3/4] md:aspect-square bg-zinc-100 relative overflow-hidden mb-4">
+                    <img
+                      src={project.images[0]}
+                      alt={project.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-105"
+                    />
+                  </div>
+                  <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-800">
+                    {project.title}
+                  </h3>
+                  <p className="text-[9px] text-zinc-400 uppercase tracking-widest mt-1">
+                    {project.subtitle}
+                  </p>
                 </div>
               ))}
             </div>
@@ -140,18 +152,37 @@ export default function Home() {
 
         {/* WORKSPACE VIDEO */}
         <div
-          className={`absolute inset-0 z-20 bg-white text-black transition-all duration-1000 scrollbar-hide overflow-y-auto px-14 md:px-32 pt-24 md:pt-40 pb-20
+          className={`absolute inset-0 z-20 bg-white text-black transition-all duration-1000 scrollbar-hide overflow-y-auto px-10 md:px-32 pt-24 md:pt-40 pb-20
           ${activeTab === "video" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"}`}
         >
-          {/* Zmiana max-w-6xl na max-w-4xl aby zwęzić kafelki */}
           <div className="max-w-4xl mx-auto flex flex-col min-h-full">
             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
-              {[1, 2, 3, 4].map((i) => (
+              {videoProjects.map((project) => (
                 <div
-                  key={i}
-                  className="aspect-[3/4] md:aspect-square bg-zinc-100 animate-fadeIn relative overflow-hidden"
+                  key={project.id}
+                  className="group/item cursor-pointer flex flex-col"
                 >
-                  <div className="absolute inset-0 bg-zinc-200 transition-transform duration-700 hover:scale-105" />
+                  <div className="aspect-[3/4] md:aspect-square bg-zinc-100 relative overflow-hidden mb-4">
+                    <video
+                      src={`${project.videoSrc}#t=0.001`} // Pobiera pierwszą klatkę jako obrazek
+                      preload="metadata"
+                      muted
+                      loop
+                      playsInline
+                      onMouseOver={(e) => e.currentTarget.play()}
+                      onMouseOut={(e) => {
+                        e.currentTarget.pause();
+                        e.currentTarget.currentTime = 0;
+                      }}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-[11px] font-bold uppercase tracking-widest text-zinc-800">
+                    {project.title}
+                  </h3>
+                  <p className="text-[9px] text-zinc-400 uppercase tracking-widest mt-1">
+                    {project.subtitle}
+                  </p>
                 </div>
               ))}
             </div>
