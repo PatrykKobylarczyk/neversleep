@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import logo from "../public/assets/logo.png";
 import { site } from "../site.config";
+import { services } from "../services";
 
 function InstagramIcon({ size }: { size: number }) {
   return (
@@ -73,6 +74,9 @@ export default function Navbar() {
           <Link href="/o-nas" className="hover:text-[#AC137E] transition">
             ABOUT
           </Link>
+          <Link href="/o-nas#uslugi" className="hover:text-[#AC137E] transition">
+            USŁUGI
+          </Link>
           <div className="flex gap-6 items-center">
             <a
               href={site.instagram}
@@ -134,6 +138,19 @@ export default function Navbar() {
           >
             ABOUT
           </Link>
+          <ul className="flex flex-col items-center gap-3 text-lg text-zinc-400">
+            {services.map((s) => (
+              <li key={s.slug}>
+                <Link
+                  href={`/${s.slug}`}
+                  onClick={() => setIsOpen(false)}
+                  className="hover:text-[#AC137E] transition-colors"
+                >
+                  {s.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
           <div className="flex gap-6 items-center">
             {/* Zwykły link https otwiera aplikację Instagram na telefonie, jeśli jest zainstalowana */}
             <a
@@ -178,7 +195,7 @@ export default function Navbar() {
           <Link
             href="/kontakt"
             onClick={() => setIsOpen(false)}
-            className="bg-gray-200 text-black px-8 py-4 rounded-full text-lg font-bold mt-20"
+            className="bg-gray-200 text-black px-8 py-4 rounded-full text-lg font-bold mt-10"
           >
             LET&apos;S TALK
           </Link>

@@ -4,7 +4,7 @@ import { site } from "../../site.config";
 export const metadata: Metadata = {
   title: "Kontakt",
   description:
-    "Napisz do Neversleep Production w sprawie sesji zdjęciowej nieruchomości, filmu reklamowego lub ujęć z drona.",
+    "Kontakt z Neversleep Production, Łódź: tel. 789 985 677, patryk.kobylarczyk@gmail.com. Sesje zdjęciowe nieruchomości, filmy reklamowe, ujęcia z drona.",
   alternates: { canonical: "/kontakt" },
 };
 
@@ -17,7 +17,8 @@ export default function Contact() {
         </h1>
         <p className="mt-10 text-lg text-zinc-300 leading-relaxed">
           Planujesz sesję zdjęciową nieruchomości, film reklamowy albo ujęcia z
-          drona? Napisz, czego potrzebujesz, a odezwiemy się z wyceną.
+          drona w Łodzi lub okolicach? Napisz albo zadzwoń, czego potrzebujesz, a
+          odezwiemy się z wyceną.
         </p>
 
         <ul className="mt-12 space-y-6 text-2xl md:text-3xl font-bold">

@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import Link from "next/link";
 import { site } from "../site.config";
+import { services } from "../services";
 
 const inter = Inter({ subsets: ["latin", "latin-ext"] });
 
@@ -36,6 +38,7 @@ const jsonLd = {
   logo: `${site.url}/assets/logo.png`,
   description: site.description,
   sameAs: [site.instagram, site.facebook],
+  employee: site.team.map((p) => ({ "@type": "Person", name: p.name, jobTitle: p.role })),
   ...(site.email && { email: site.email }),
   ...(site.phone && { telephone: site.phone }),
   ...(site.city && {
@@ -60,8 +63,28 @@ export default function RootLayout({
 
         <main>{children}</main>
 
-        <footer className="py-12 text-center border-t border-white/5 text-gray-200 text-sm bg-[#111]">
-          © {new Date().getFullYear()} NEVERSLEEP PRODUCTION. ALL RIGHTS RESERVED.
+        <footer className="py-12 px-8 border-t border-white/5 text-gray-200 text-sm bg-[#111]">
+          <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-8 md:justify-between">
+            <nav aria-label="Usługi" className="flex flex-col gap-2">
+              {services.map((s) => (
+                <Link key={s.slug} href={`/${s.slug}`} className="hover:text-[#AC137E] transition-colors">
+                  {s.name} Łódź
+                </Link>
+              ))}
+            </nav>
+            <address className="not-italic flex flex-col gap-2 md:text-right">
+              <span>{site.name}, {site.city}</span>
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-[#AC137E] transition-colors">
+                {site.phone}
+              </a>
+              <a href={`mailto:${site.email}`} className="hover:text-[#AC137E] transition-colors">
+                {site.email}
+              </a>
+            </address>
+          </div>
+          <p className="mt-10 text-center text-zinc-500">
+            © {new Date().getFullYear()} NEVERSLEEP PRODUCTION. ALL RIGHTS RESERVED.
+          </p>
         </footer>
       </body>
     </html>
