@@ -2,12 +2,35 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import Marquee from "./Marquee";
 import {
   photoProjects,
   videoProjects,
   type PhotoProject,
   type VideoProject,
 } from "../data";
+
+const photoCount = photoProjects.reduce((n, p) => n + p.images.length, 0);
+
+// Wjazd połówek przy wejściu na stronę
+const halfVariants = {
+  hidden: (fromLeft: boolean) => ({ opacity: 0, x: fromLeft ? "-6%" : "6%" }),
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 1.1, ease: [0.23, 1, 0.32, 1] as const },
+  },
+};
+
+// Tytuł i podtytuł pojawiają się jeden po drugim
+const introVariants = {
+  hidden: { opacity: 0, y: 40 },
+  show: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.9, delay, ease: [0.23, 1, 0.32, 1] as const },
+  }),
+};
 
 export default function Portfolio() {
   const [activeTab, setActiveTab] = useState<"foto" | "video" | null>(null);
@@ -29,25 +52,28 @@ export default function Portfolio() {
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
-  const paginate = useCallback((newDirection: number) => {
-    if (selectedProject && modalImageIndex !== null) {
-      setDirection(newDirection);
-      setModalImageIndex(
-        (prev) =>
-          (prev! + newDirection + selectedProject.images.length) %
-          selectedProject.images.length,
-      );
-    } else if (selectedVideo) {
-      setDirection(newDirection);
-      const currentIndex = videoProjects.findIndex(
-        (v) => v.id === selectedVideo.id,
-      );
-      const nextIndex =
-        (currentIndex + newDirection + videoProjects.length) %
-        videoProjects.length;
-      setSelectedVideo(videoProjects[nextIndex]);
-    }
-  }, [selectedProject, modalImageIndex, selectedVideo]);
+  const paginate = useCallback(
+    (newDirection: number) => {
+      if (selectedProject && modalImageIndex !== null) {
+        setDirection(newDirection);
+        setModalImageIndex(
+          (prev) =>
+            (prev! + newDirection + selectedProject.images.length) %
+            selectedProject.images.length,
+        );
+      } else if (selectedVideo) {
+        setDirection(newDirection);
+        const currentIndex = videoProjects.findIndex(
+          (v) => v.id === selectedVideo.id,
+        );
+        const nextIndex =
+          (currentIndex + newDirection + videoProjects.length) %
+          videoProjects.length;
+        setSelectedVideo(videoProjects[nextIndex]);
+      }
+    },
+    [selectedProject, modalImageIndex, selectedVideo],
+  );
 
   const isLightboxOpen = modalImageIndex !== null || selectedVideo !== null;
 
@@ -83,8 +109,11 @@ export default function Portfolio() {
 
       {/* PRZYCISK ZAMKNIĘCIA SEKCJI */}
       {activeTab && modalImageIndex === null && !selectedVideo && (
-        <button
+        <motion.button
           type="button"
+          initial={{ opacity: 0, rotate: -90 }}
+          animate={{ opacity: 1, rotate: 0 }}
+          whileHover={{ rotate: 90, scale: 1.15 }}
           aria-label={selectedProject ? "Wróć do listy galerii" : "Zamknij sekcję"}
           onClick={(e) => {
             e.stopPropagation();
@@ -108,13 +137,17 @@ export default function Portfolio() {
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
-        </button>
+        </motion.button>
       )}
 
       {/* SEKCJA FOTO */}
-      <section
+      <motion.section
+        custom={true}
+        variants={halfVariants}
+        initial="hidden"
+        animate="show"
         onClick={() => setActiveTab("foto")}
-        className={`relative flex flex-col justify-end p-8 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer overflow-hidden group ${activeTab === "video" ? "flex-[0.08] md:flex-[0.03]" : "flex-1"}`}
+        className={`relative flex flex-col justify-end p-8 pb-16 md:pb-20 transition-[flex] duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer overflow-hidden group ${activeTab === "video" ? "flex-[0.08] md:flex-[0.03]" : "flex-1"}`}
       >
         <Image
           src={photoProjects[0].images[0].src}
@@ -122,7 +155,7 @@ export default function Portfolio() {
           fill
           priority
           sizes="(min-width: 768px) 50vw, 100vw"
-          className="object-cover transition-transform duration-1000 group-hover:scale-105"
+          className="object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110"
         />
         {/* Niewidoczny przycisk, żeby sekcję dało się otworzyć z klawiatury */}
         {activeTab !== "foto" && (
@@ -134,7 +167,14 @@ export default function Portfolio() {
           />
         )}
         <div
-          className={`absolute inset-0 bg-black transition-opacity duration-700 ${activeTab === "video" ? "opacity-95" : activeTab === "foto" ? "opacity-0" : "opacity-40 group-hover:opacity-10"}`}
+          className={`absolute inset-0 bg-black transition-opacity duration-700 ${activeTab === "video" ? "opacity-95" : activeTab === "foto" ? "opacity-0" : "opacity-50 group-hover:opacity-25"}`}
+        />
+        {/* Kolorowa poświata przy najechaniu */}
+        {/* Przyciemnienie u dołu, żeby napisy były czytelne na każdym zdjęciu */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black via-black/75 to-transparent" />
+        {/* Delikatna poświata w kolorze marki przy najechaniu */}
+        <div
+          className={`pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-accent/30 to-transparent opacity-0 transition-opacity duration-700 ${activeTab === null ? "group-hover:opacity-100" : ""}`}
         />
 
         {/* Pionowy napis przy zwiniętej sekcji */}
@@ -148,14 +188,37 @@ export default function Portfolio() {
 
         {/* Tytuł i PODTYTUŁ sekcji głównej */}
         <div
-          className={`relative z-10 transition-all duration-500 ${activeTab !== null ? "opacity-0 translate-y-10" : "opacity-100 translate-y-0"}`}
+          className={`relative z-20 transition-all duration-500 ${activeTab !== null ? "opacity-0 translate-y-10" : "opacity-100 translate-y-0"}`}
         >
-          <h2 className="text-4xl md:text-7xl font-black italic uppercase leading-none text-white">
+          <motion.p
+            custom={0.5}
+            variants={introVariants}
+            initial="hidden"
+            animate="show"
+            className="mb-4 flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.5em] text-zinc-200 [text-shadow:0_1px_6px_rgba(0,0,0,0.9)]"
+          >
+            <span className="text-accent">01</span>
+            <span className="h-px w-10 bg-accent transition-all duration-700 group-hover:w-24" />
+            {photoCount} zdjęć
+          </motion.p>
+          <motion.h2
+            custom={0.6}
+            variants={introVariants}
+            initial="hidden"
+            animate="show"
+            className="text-outline text-5xl md:text-8xl font-black italic uppercase leading-none transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-3"
+          >
             FOTO
-          </h2>
-          <p className="text-[10px] md:text-xs font-medium tracking-[0.4em] text-zinc-400 mt-4 uppercase">
+          </motion.h2>
+          <motion.p
+            custom={0.75}
+            variants={introVariants}
+            initial="hidden"
+            animate="show"
+            className="text-[10px] md:text-xs font-medium tracking-[0.4em] text-zinc-300 mt-4 uppercase"
+          >
             Architecture / Interior / Product
-          </p>
+          </motion.p>
         </div>
 
         {/* Grid Foto */}
@@ -165,10 +228,21 @@ export default function Portfolio() {
           <div className="max-w-6xl mx-auto">
             {!selectedProject ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                {photoProjects.map((p) => (
-                  <button
+                {photoProjects.map((p, i) => (
+                  <motion.button
                     type="button"
                     key={p.id}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={
+                      activeTab === "foto"
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 0, y: 40 }
+                    }
+                    transition={{
+                      duration: 0.7,
+                      delay: activeTab === "foto" ? 0.25 + i * 0.12 : 0,
+                      ease: [0.23, 1, 0.32, 1],
+                    }}
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedProject(p);
@@ -180,52 +254,61 @@ export default function Portfolio() {
                         src={p.images[0].src}
                         fill
                         sizes="(min-width: 768px) 576px, 100vw"
-                        className="object-cover transition-transform duration-700 group-hover/item:scale-105"
+                        className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/item:scale-110"
                         alt={p.alt}
                       />
+                      <span className="absolute bottom-0 left-0 h-[3px] w-0 bg-accent transition-all duration-700 group-hover/item:w-full" />
                     </div>
-                    <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] leading-none">
+                    <h3 className="text-[11px] font-bold uppercase tracking-[0.2em] leading-none transition-colors duration-300 group-hover/item:text-accent">
                       {p.title}
                     </h3>
                     <p className="text-[9px] text-zinc-400 uppercase tracking-widest mt-2">
-                      {p.subtitle}
+                      {p.subtitle} · {p.images.length}
                     </p>
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             ) : (
               <div className="columns-1 md:columns-2 gap-4 space-y-4">
                 {selectedProject.images.map((img, idx) => (
-                  <button
+                  <motion.button
                     type="button"
                     key={img.src}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
                     aria-label={`Powiększ zdjęcie ${idx + 1} z ${selectedProject.images.length}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       setModalImageIndex(idx);
                     }}
-                    className="block w-full break-inside-avoid cursor-pointer hover:opacity-90 transition-opacity"
+                    className="block w-full break-inside-avoid cursor-pointer overflow-hidden"
                   >
                     <Image
                       src={img.src}
                       width={img.width}
                       height={img.height}
                       sizes="(min-width: 768px) 576px, 100vw"
-                      className="w-full h-auto"
+                      className="w-full h-auto transition-transform duration-[1.2s] ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-105"
                       alt={`${selectedProject.alt} – zdjęcie ${idx + 1}`}
                     />
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             )}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* SEKCJA VIDEO */}
-      <section
+      <motion.section
+        custom={false}
+        variants={halfVariants}
+        initial="hidden"
+        animate="show"
         onClick={() => setActiveTab("video")}
-        className={`relative flex flex-col justify-end p-8 transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer overflow-hidden group ${activeTab === "foto" ? "flex-[0.08] md:flex-[0.03]" : "flex-1"}`}
+        className={`relative flex flex-col justify-end p-8 pb-16 md:pb-20 transition-[flex] duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer overflow-hidden group ${activeTab === "foto" ? "flex-[0.08] md:flex-[0.03]" : "flex-1"}`}
       >
         <video
           autoPlay
@@ -234,7 +317,7 @@ export default function Portfolio() {
           playsInline
           aria-hidden="true"
           poster="/assets/hero-poster.jpg"
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110"
           src="/assets/hero.mp4"
         />
         {/* Niewidoczny przycisk, żeby sekcję dało się otworzyć z klawiatury */}
@@ -247,7 +330,13 @@ export default function Portfolio() {
           />
         )}
         <div
-          className={`absolute inset-0 bg-black transition-opacity duration-700 ${activeTab === "foto" ? "opacity-95" : activeTab === "video" ? "opacity-0" : "opacity-40 group-hover:opacity-10"}`}
+          className={`absolute inset-0 bg-black transition-opacity duration-700 ${activeTab === "foto" ? "opacity-95" : activeTab === "video" ? "opacity-0" : "opacity-50 group-hover:opacity-25"}`}
+        />
+        {/* Przyciemnienie u dołu, żeby napisy były czytelne na każdym zdjęciu */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black via-black/75 to-transparent" />
+        {/* Delikatna poświata w kolorze marki przy najechaniu */}
+        <div
+          className={`pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-accent/30 to-transparent opacity-0 transition-opacity duration-700 ${activeTab === null ? "group-hover:opacity-100" : ""}`}
         />
 
         {/* Pionowy napis przy zwiniętej sekcji */}
@@ -261,14 +350,37 @@ export default function Portfolio() {
 
         {/* Tytuł i PODTYTUŁ sekcji głównej */}
         <div
-          className={`relative z-10 transition-all duration-500 ${activeTab !== null ? "opacity-0 translate-y-10" : "opacity-100 translate-y-0"}`}
+          className={`relative z-20 transition-all duration-500 ${activeTab !== null ? "opacity-0 translate-y-10" : "opacity-100 translate-y-0"}`}
         >
-          <h2 className="text-4xl md:text-7xl font-black italic uppercase leading-none text-white">
+          <motion.p
+            custom={0.55}
+            variants={introVariants}
+            initial="hidden"
+            animate="show"
+            className="mb-4 flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.5em] text-zinc-200 [text-shadow:0_1px_6px_rgba(0,0,0,0.9)]"
+          >
+            <span className="text-accent">02</span>
+            <span className="h-px w-10 bg-accent transition-all duration-700 group-hover:w-24" />
+            {videoProjects.length} filmy
+          </motion.p>
+          <motion.h2
+            custom={0.65}
+            variants={introVariants}
+            initial="hidden"
+            animate="show"
+            className="text-outline text-5xl md:text-8xl font-black italic uppercase leading-none transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-3"
+          >
             VIDEO
-          </h2>
-          <p className="text-[10px] md:text-xs font-medium tracking-[0.4em] text-zinc-400 mt-4 uppercase">
+          </motion.h2>
+          <motion.p
+            custom={0.8}
+            variants={introVariants}
+            initial="hidden"
+            animate="show"
+            className="text-[10px] md:text-xs font-medium tracking-[0.4em] text-zinc-300 mt-4 uppercase"
+          >
             Commercial / Music Video / Drone
-          </p>
+          </motion.p>
         </div>
 
         {/* Grid Video */}
@@ -276,10 +388,21 @@ export default function Portfolio() {
           className={`absolute inset-0 z-20 bg-white text-black transition-all duration-1000 scrollbar-hide overflow-y-auto px-10 md:px-32 pt-24 md:pt-40 pb-20 ${activeTab === "video" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"}`}
         >
           <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-            {videoProjects.map((v) => (
-              <button
+            {videoProjects.map((v, i) => (
+              <motion.button
                 type="button"
                 key={v.id}
+                initial={{ opacity: 0, y: 40 }}
+                animate={
+                  activeTab === "video"
+                    ? { opacity: 1, y: 0 }
+                    : { opacity: 0, y: 40 }
+                }
+                transition={{
+                  duration: 0.7,
+                  delay: activeTab === "video" ? 0.25 + i * 0.1 : 0,
+                  ease: [0.23, 1, 0.32, 1],
+                }}
                 onClick={(e) => {
                   e.stopPropagation();
                   setSelectedVideo(v);
@@ -300,20 +423,53 @@ export default function Portfolio() {
                       e.currentTarget.pause();
                       e.currentTarget.currentTime = 0;
                     }}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover/item:scale-105"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/item:scale-110"
                   />
+                  <span className="absolute bottom-0 left-0 h-[3px] w-0 bg-accent transition-all duration-700 group-hover/item:w-full" />
+                  {/* Ikona odtwarzania */}
+                  <span className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover/item:opacity-100">
+                    <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/70 bg-black/30 backdrop-blur-sm">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </span>
                 </div>
-                <h3 className="text-[11px] font-bold uppercase tracking-widest leading-none">
+                <h3 className="text-[11px] font-bold uppercase tracking-widest leading-none transition-colors duration-300 group-hover/item:text-accent">
                   {v.title}
                 </h3>
                 <p className="text-[9px] text-zinc-400 uppercase tracking-widest mt-2">
                   {v.subtitle}
                 </p>
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
+
+      {/* PASEK Z USŁUGAMI – tylko na ekranie startowym */}
+      <AnimatePresence>
+        {activeTab === null && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, delay: 1, ease: [0.23, 1, 0.32, 1] }}
+            className="absolute inset-x-0 bottom-0 z-30"
+          >
+            <Marquee
+              items={[
+                "Fotografia nieruchomości",
+                "Wnętrza i architektura",
+                "Film reklamowy",
+                "Teledyski",
+                "Dron",
+                "Łódź",
+              ]}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* MODAL LIGHTBOX */}
       <AnimatePresence initial={false}>
@@ -358,7 +514,7 @@ export default function Portfolio() {
                   e.stopPropagation();
                   paginate(-1);
                 }}
-                className="pointer-events-auto p-4 text-zinc-200/50 hover:text-zinc-200 transition-colors"
+                className="pointer-events-auto p-4 text-zinc-200/50 hover:text-accent transition-colors"
               >
                 <svg
                   width="45"
@@ -378,7 +534,7 @@ export default function Portfolio() {
                   e.stopPropagation();
                   paginate(1);
                 }}
-                className="pointer-events-auto p-4 text-zinc-200/50 hover:text-zinc-200 transition-colors"
+                className="pointer-events-auto p-4 text-zinc-200/50 hover:text-accent transition-colors"
               >
                 <svg
                   width="45"
@@ -392,6 +548,15 @@ export default function Portfolio() {
                 </svg>
               </button>
             </div>
+
+            {/* Licznik zdjęć */}
+            {modalImageIndex !== null && selectedProject && (
+              <p className="absolute bottom-10 left-1/2 z-[350] -translate-x-1/2 text-[10px] font-bold uppercase tracking-[0.5em] text-zinc-400">
+                {String(modalImageIndex + 1).padStart(2, "0")}
+                <span className="text-accent"> / </span>
+                {String(selectedProject.images.length).padStart(2, "0")}
+              </p>
+            )}
 
             <div className="relative w-full h-full flex items-center justify-center">
               <AnimatePresence initial={false} custom={direction}>
