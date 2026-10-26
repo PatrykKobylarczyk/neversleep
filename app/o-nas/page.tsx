@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { site } from "../../site.config";
+import { services } from "../../services";
 
 export const metadata: Metadata = {
   title: "O nas",
   description:
-    "Neversleep Production – fotografia nieruchomości, wnętrz i produktów oraz filmy reklamowe, teledyski i ujęcia z drona.",
+    "Neversleep Production to duet z Łodzi: Patryk Kobylarczyk (fotografia) i Kamil Pokrzywa (video). Zdjęcia nieruchomości i wnętrz, filmy reklamowe, ujęcia z drona.",
   alternates: { canonical: "/o-nas" },
 };
 
-// TODO: podmienić tekst na własny opis firmy (kim jesteś, doświadczenie, sprzęt, obszar działania)
 export default function About() {
   return (
     <div className="min-h-dvh bg-black px-8 md:px-20 pt-48 pb-24">
@@ -17,19 +17,38 @@ export default function About() {
         <h1 className="text-4xl md:text-6xl font-black italic uppercase leading-none">
           O nas
         </h1>
-        <p className="mt-10 text-lg text-zinc-300 leading-relaxed">
-          Neversleep Production to produkcja zdjęć i filmów. Fotografujemy
-          nieruchomości, wnętrza i produkty, realizujemy filmy reklamowe,
-          teledyski i ujęcia z drona.
-        </p>
+        <div className="mt-10 space-y-6 text-lg text-zinc-300 leading-relaxed">
+          <p>
+            Neversleep Production to duet z Łodzi. Jest nas dwóch i świetnie się
+            uzupełniamy: Patryk odpowiada za fotografię, Kamil za video. Dzięki
+            temu jedną sesję możemy zamienić w komplet zdjęć i film.
+          </p>
+          <p>
+            Fotografujemy nieruchomości, wnętrza i produkty, realizujemy filmy
+            reklamowe, teledyski i ujęcia z drona. Działamy w Łodzi i okolicach.
+          </p>
+        </div>
 
-        <h2 className="mt-16 text-xs font-bold tracking-[0.4em] text-zinc-400 uppercase">
+        <ul className="mt-12 grid gap-6 md:grid-cols-2">
+          {site.team.map((person) => (
+            <li key={person.name} className="border border-white/10 p-6">
+              <p className="text-2xl font-bold">{person.name}</p>
+              <p className="mt-2 text-xs font-bold tracking-[0.4em] text-zinc-400 uppercase">
+                {person.role}
+              </p>
+            </li>
+          ))}
+        </ul>
+
+        <h2 id="uslugi" className="scroll-mt-40 mt-16 text-xs font-bold tracking-[0.4em] text-zinc-400 uppercase">
           Usługi
         </h2>
         <ul className="mt-6 grid gap-3 md:grid-cols-2 text-lg">
-          {site.services.map((s) => (
-            <li key={s} className="border-b border-white/10 pb-3">
-              {s}
+          {services.map((s) => (
+            <li key={s.slug} className="border-b border-white/10 pb-3">
+              <Link href={`/${s.slug}`} className="hover:text-[#AC137E] transition-colors">
+                {s.name}
+              </Link>
             </li>
           ))}
         </ul>
