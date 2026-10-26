@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Archivo_Black } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Cursor from "../components/Cursor";
@@ -8,6 +8,12 @@ import { site } from "../site.config";
 import { services } from "../services";
 
 const inter = Inter({ subsets: ["latin", "latin-ext"] });
+// Krój do dużych nagłówków – statyczny, więc obrys liter się nie przecina
+const display = Archivo_Black({
+  weight: "400",
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-archivo",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -55,7 +61,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pl">
-      <body className={`${inter.className} grain bg-black text-white`}>
+      <body className={`${inter.className} ${display.variable} grain bg-black text-white`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

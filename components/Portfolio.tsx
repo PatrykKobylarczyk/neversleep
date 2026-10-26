@@ -206,7 +206,7 @@ export default function Portfolio() {
             variants={introVariants}
             initial="hidden"
             animate="show"
-            className="text-outline text-5xl md:text-8xl font-black italic uppercase leading-none transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-3"
+            className="text-outline font-display text-5xl md:text-8xl italic uppercase leading-none transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-3"
           >
             FOTO
           </motion.h2>
@@ -368,7 +368,7 @@ export default function Portfolio() {
             variants={introVariants}
             initial="hidden"
             animate="show"
-            className="text-outline text-5xl md:text-8xl font-black italic uppercase leading-none transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-3"
+            className="text-outline font-display text-5xl md:text-8xl italic uppercase leading-none transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-3"
           >
             VIDEO
           </motion.h2>
