@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { site } from "../../site.config";
 import { services } from "../../services";
+import ParallaxHero from "../../components/fx/ParallaxHero";
+import ScrollWords from "../../components/fx/ScrollWords";
+import Reveal from "../../components/fx/Reveal";
+import TeamCard from "../../components/fx/TeamCard";
+import HoverList from "../../components/fx/HoverList";
+import BigCta from "../../components/fx/BigCta";
+import Marquee from "../../components/Marquee";
 
 export const metadata: Metadata = {
   title: "O nas",
@@ -10,64 +16,87 @@ export const metadata: Metadata = {
   alternates: { canonical: "/o-nas" },
 };
 
+// Opisy i tła kart zespołu – praca każdej z osób
+const teamDetails: Record<string, { text: string; media: React.ComponentProps<typeof TeamCard>["media"] }> = {
+  "Patryk Kobylarczyk": {
+    text: "Fotografia nieruchomości, wnętrz i detali. Światło, linie i kadr, który sprzedaje przestrzeń.",
+    media: { type: "image", src: "/assets/foto/estates/e-33.jpg" },
+  },
+  "Kamil Pokrzywa": {
+    text: "Filmy reklamowe, teledyski, wydarzenia i ujęcia z drona. Od pomysłu, przez zdjęcia, po montaż i kolor.",
+    media: {
+      type: "video",
+      src: "/assets/video/hero-Bridge.mp4",
+      poster: "/assets/video/posters/hero-Bridge.jpg",
+    },
+  },
+};
+
 export default function About() {
   return (
-    <div className="min-h-dvh bg-black px-8 md:px-20 pt-48 pb-24">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-black italic uppercase leading-none">
-          O nas
-        </h1>
-        <div className="mt-10 space-y-6 text-lg text-zinc-300 leading-relaxed">
-          <p>
-            Neversleep Production to duet z Łodzi. Jest nas dwóch i świetnie się
-            uzupełniamy: Patryk odpowiada za fotografię, Kamil za video. Dzięki
-            temu jedną sesję możemy zamienić w komplet zdjęć i film.
-          </p>
-          <p>
-            Fotografujemy nieruchomości, wnętrza i produkty, realizujemy filmy
-            reklamowe, teledyski i ujęcia z drona. Działamy w Łodzi i okolicach.
-          </p>
-        </div>
+    <div className="bg-black">
+      <ParallaxHero
+        kicker="Neversleep Production · Łódź"
+        title="Jest nas dwóch"
+        media={{
+          type: "video",
+          src: "/assets/video/hero-Bridge.mp4",
+          poster: "/assets/video/posters/hero-Bridge.jpg",
+        }}
+      />
 
-        <ul className="mt-12 grid gap-6 md:grid-cols-2">
-          {site.team.map((person) => (
-            <li key={person.name} className="border border-white/10 p-6">
-              <p className="text-2xl font-bold">{person.name}</p>
-              <p className="mt-2 text-xs font-bold tracking-[0.4em] text-zinc-400 uppercase">
-                {person.role}
-              </p>
-            </li>
+      {/* MANIFEST */}
+      <section className="px-8 py-32 md:px-20 md:py-48">
+        <ScrollWords
+          text="Działamy w duecie, bo świetnie się uzupełniamy. Patryk robi zdjęcia, Kamil kręci filmy. Jedna sesja może dać Ci komplet: kadry do ogłoszenia i film, który zatrzyma scrollowanie."
+          className="max-w-6xl text-3xl font-semibold leading-[1.15] md:text-6xl"
+        />
+      </section>
+
+      {/* ZESPÓŁ */}
+      <section className="px-6 pb-32 md:px-20 md:pb-48">
+        <Reveal>
+          <h2 className="mb-12 text-xs font-bold uppercase tracking-[0.5em] text-zinc-400">
+            Zespół
+          </h2>
+        </Reveal>
+        <div className="grid gap-10 md:grid-cols-2 md:gap-16">
+          {site.team.map((person, i) => (
+            <TeamCard
+              key={person.name}
+              index={i}
+              name={person.name}
+              role={person.role}
+              text={teamDetails[person.name].text}
+              media={teamDetails[person.name].media}
+            />
           ))}
-        </ul>
-
-        <h2 id="uslugi" className="scroll-mt-40 mt-16 text-xs font-bold tracking-[0.4em] text-zinc-400 uppercase">
-          Usługi
-        </h2>
-        <ul className="mt-6 grid gap-3 md:grid-cols-2 text-lg">
-          {services.map((s) => (
-            <li key={s.slug} className="border-b border-white/10 pb-3">
-              <Link href={`/${s.slug}`} className="hover:text-[#AC137E] transition-colors">
-                {s.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-16 flex flex-wrap gap-4">
-          <Link
-            href="/"
-            className="border border-white/30 px-8 py-4 rounded-full font-bold hover:border-[#AC137E] hover:text-[#AC137E] transition-colors"
-          >
-            ZOBACZ PORTFOLIO
-          </Link>
-          <Link
-            href="/kontakt"
-            className="bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-[#AC137E] hover:text-white transition-colors"
-          >
-            LET&apos;S TALK
-          </Link>
         </div>
+      </section>
+
+      {/* PASEK */}
+      <div className="relative h-12">
+        <Marquee items={["Fotografia", "Video", "Dron", "Wnętrza", "Reklama", "Łódź"]} />
       </div>
+
+      {/* USŁUGI */}
+      <section id="uslugi" className="scroll-mt-32 px-8 py-32 md:px-20 md:py-48">
+        <Reveal>
+          <h2 className="mb-12 text-xs font-bold uppercase tracking-[0.5em] text-zinc-400">
+            Usługi
+          </h2>
+        </Reveal>
+        <HoverList
+          items={services.map((s) => ({
+            href: `/${s.slug}`,
+            label: s.name,
+            meta: s.kicker,
+            image: s.preview,
+          }))}
+        />
+      </section>
+
+      <BigCta />
     </div>
   );
 }
